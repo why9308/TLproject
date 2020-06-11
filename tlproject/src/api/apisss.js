@@ -26,17 +26,6 @@ export const API_ORDERLIST = (currentPage, pageSize) => axios.get("/order/list",
 // phone 手机号
 // orderState 订单状态 currentPage
 // date  时间范围，字符串格类型如: ["2019-10-05 00:00:00","2019-10-10 00:00:00"]
-export const API_ORDER_SEARCH = (currentPage, pageSize, orderNo, consignee, phone, orderState, date) => axios.get('/order/search', {
-    params: {
-        currentPage,
-        pageSize,
-        orderNo,
-        consignee,
-        phone,
-        orderState,
-        date
-    }
-})
 export const API_ORDERLIST1 = (currentPage, pageSize, orderNo, consignee, phone, orderState, date) => axios.get('/order/search', {
     params: {
         currentPage,
@@ -81,3 +70,19 @@ export const API_ORDER_EDIT = (id, orderNo, orderTime, phone, consignee, deliver
 })
 // 获取店铺详情
 export const API_INFO = () => axios.get("/shop/info",{params:{}})
+
+// 店铺内容修改
+
+// id 店铺id
+// name	店铺名称
+// bulletin	店铺公告
+// avatar  店铺头像
+// deliveryPrice 起送价格
+// deliveryTime	 送达时间
+// description	 店铺描述
+// score 店铺好评率
+// sellCount 店铺销量
+// supports	 活动支持
+// date	营业时间
+// pics	图片
+export const API_EDIT=(id,name,bulletin,avatar,deliveryPrice,deliveryTime,description,score,sellCount,supports,date,pics)=>axios.post("/shop/edit",{id,name,bulletin,avatar,deliveryPrice,deliveryTime,description,score,sellCount,supports,date,pics})

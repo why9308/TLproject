@@ -11,16 +11,8 @@
       value-format="yyyy-MM-dd HH:mm:ss"
       unlink-panels>
     </el-date-picker>
-    <!-- <el-date-picker
-      v-model="value"
-      type="daterange"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期"
-      :default-time="['00:00:00', '23:59:59']"
-      value-format="yyyy-MM-dd HH:mm:ss"
-    ></el-date-picker> -->
     <el-button type="primary" size="medium" @click="orderbtn">查询</el-button>
-    <el-card id="echarts_box" class="box-card">占位111</el-card>
+    <el-card id="echarts_box" class="box-card"></el-card>
   </div>
 </template>
 
@@ -38,9 +30,7 @@ export default {
   },
   mounted() {
     var myecharts = echarts.init(document.getElementById("echarts_box"));
-    API_ORDERTOTAL(this.date.toString()).then(res => {
-      console.log(res);
-      
+    API_ORDERTOTAL(this.date.toString()).then(() => {   
      let option = {
         title: {
           text: "数据统计",

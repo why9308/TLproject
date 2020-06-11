@@ -78,7 +78,7 @@ export default {
       multipleSelection: [],
       empty: [],
       // 数据总条数
-      totol: 0,
+      total:0,
 
       // 每页条数
       pageSize: 5,
@@ -178,12 +178,12 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val;
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
       this.getDate();
     },
     handleCurrentChange(val) {
       this.page = val;
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.getDate();
     }
   },

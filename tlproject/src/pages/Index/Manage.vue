@@ -3,18 +3,18 @@
     <div slot="header" class="clearfix">
       <span>店铺管理</span>
       <el-button style="float: right; padding: 3px 0" type="text">
-        <el-button type="primary" size="mini">保存</el-button>
+        <el-button type="primary" size="mini" @click="modification">保存</el-button>
       </el-button>
     </div>
     <div class="Manage_box">
-      <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
+      <el-form :label-position="labelPosition" label-width="80px">
         <el-form-item label="店铺名称">
           <el-input v-model="formLabelAlign.name"></el-input>
         </el-form-item>
         <el-form-item label="店铺公告">
           <el-input type="textarea" v-model="formLabelAlign.bulletin"></el-input>
         </el-form-item>
-        <el-form-item label="店铺头像">
+        <el-form-item label="店铺头像" v-model="formLabelAlign.avatar">
           <el-upload
             class="avatar-uploader"
             action="http://127.0.0.1:5000/shop/upload"
@@ -22,24 +22,34 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-          <!-- avatar -->
-            <img :src='"http://127.0.0.1:5000/upload/shop/"+this.formLabelAlign.avatar' class="avatar" />
+            <!-- avatar -->
+            <img
+              :src='"http://127.0.0.1:5000/upload/shop/"+this.formLabelAlign.avatar'
+              class="avatar"
+            />
             <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
           </el-upload>
         </el-form-item>
-        <el-form-item label="店铺图片">
-          <img  v-for="(item,index) in formLabelAlign.pics" :key="item" :src='"http://127.0.0.1:5000/upload/shop/"+formLabelAlign.pics[index]' alt="">
+        <el-form-item label="店铺图片" v-model="formLabelAlign.pics">
+          <img
+            class="img"
+            v-for="(item,index) in formLabelAlign.pics"
+            :key="item"
+            :src='"http://127.0.0.1:5000/upload/shop/"+formLabelAlign.pics[index]'
+            alt
+          />
           <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="http://127.0.0.1:5000/shop/upload"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
+            :on-success="pics_success"
           >
-          <!-- pics -->
+            <!-- pics -->
             <i class="el-icon-plus"></i>
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" src="" alt />
+            <img width="100%" src alt />
           </el-dialog>
         </el-form-item>
         <el-form-item label="配送费">
@@ -58,11 +68,12 @@
           <el-input v-model="formLabelAlign.sellCount"></el-input>
         </el-form-item>
         <el-form-item label="活动">
-          <el-checkbox-group  v-model="formLabelAlign.supports">
-            <!-- <el-checkbox label="在线支付满28减5"  name="supports"></el-checkbox>
-            <el-checkbox label="VC无限橙汁全场8折" name="supports"></el-checkbox>
-            <el-checkbox label="单人精华套餐" name="supports"></el-checkbox>
-            <el-checkbox label="单人特色套餐" name="supports"></el-checkbox> -->
+          <el-checkbox-group v-model="checkList">
+            <el-checkbox label="在线支付满28减5"></el-checkbox>
+            <el-checkbox label="VC无限橙果汁全场8折"></el-checkbox>
+            <el-checkbox label="单人精彩套餐"></el-checkbox>
+            <el-checkbox label="特价饮品8折抢购"></el-checkbox>
+            <el-checkbox label="单人特色套餐"></el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="营业时间">
@@ -84,11 +95,11 @@
 </template>
 
 <script>
-import{API_INFO} from "@/api/apisss"
+import { API_INFO,API_EDIT } from "@/api/apisss";
 export default {
   data() {
     return {
-      imageUrl: "",
+      pics: [],
       dialogImageUrl: "",
       dialogVisible: false,
       labelPosition: "right",
@@ -104,6 +115,9 @@ export default {
         // time: "",
         // data:""
       },
+      id: "",
+      checkList: [],
+      flag: true,
       circleUrl:
         "http://img1.imgtn.bdimg.com/it/u=2630455749,3901005152&fm=26&gp=0.jpg",
       squareUrl:
@@ -121,6 +135,12 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+      this.formLabelAlign.avatar = res.imgUrl;
+    },
+    pics_success(res) {
+      //  this.pics=res.imageUrl;
+      this.pics.push(res.imgUrl);
+      // console.log(this.pi
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
@@ -133,19 +153,44 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
-    }
-  },
-  created(){
-    API_INFO().then(res=>{
-      console.log(res);
-      this.formLabelAlign=res.data.data
-      console.log(this.formLabelAlign.supports);
-      console.log(this.formLabelAlign.avatar);
-      console.log(this.formLabelAlign.pics);
+    },
+    modification() {  
+      API_EDIT(
+        this.id,
+        this.formLabelAlign.name,
+        this.formLabelAlign.bulletin,
+        this.formLabelAlign.avatar,
+        this.formLabelAlign.deliveryPrice,
+        this.formLabelAlign.deliveryTime,
+        this.formLabelAlign.description,
+        this.formLabelAlign.score,
+        this.formLabelAlign.sellCount,
+        JSON.stringify(this.checkList),
+        JSON.stringify(this.formLabelAlign.date),
+        JSON.stringify(this.pics)
+      ).then(()=>{   
+        this.formLabelAlign.pics=this.pics               
+      })
+       this.getdata();
+      // console.log( this.formLabelAlign.date);
+      // console.log(this.formLabelAlign.date.toString());
+      // console.log(this.time.toString());
       
       
       
+    },
+    // 封装
+    getdata(){
+      API_INFO().then(res => {   
+      this.formLabelAlign = res.data.data;
+      this.checkList = res.data.data.supports;
+      this.id =res.data.data.id ;
     })
+    }
+      
+  },
+  created() {
+    this.getdata()
   }
 };
 </script>
@@ -154,6 +199,11 @@ export default {
 .Manage_box {
   .el-input {
     width: 300px;
+  }
+  .img{
+    width: 100px;
+    height:100px ;
+    margin-right: 5px;
   }
   .el-textarea {
     width: 300px;
@@ -165,7 +215,8 @@ export default {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    width: 180px;
+    width: 160px;
+    height: 160px;
   }
   .avatar-uploader .el-upload:hover {
     border-color: #409eff;
@@ -179,8 +230,8 @@ export default {
     text-align: center;
   }
   .avatar {
-    width: 178px;
-    height: 178px;
+    width: 160px;
+    height: 160px;
     display: block;
   }
 }

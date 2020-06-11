@@ -228,7 +228,6 @@
 <script>
 // 
 import {
-  API_ORDERLIST,
   API_ORDER_DETAIL,
   API_ORDER_EDIT,
   API_ORDERLIST1
@@ -281,7 +280,13 @@ export default {
   methods: {
     // 封装刷新
     getdata() {
-      API_ORDERLIST(this.page, this.pageSize).then(res => {
+      API_ORDERLIST1( this.page,
+        this.pageSize,
+        this.orderSearch.orderNo,
+        this.orderSearch.consignee,
+        this.orderSearch.phone,
+        this.orderSearch.orderState,
+        this.value).then(res => {
         this.total = res.data.total;
         this.tableData = res.data.data;
         this.tableData.forEach(v=>{
