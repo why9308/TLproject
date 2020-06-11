@@ -41,75 +41,85 @@
 <script>
 import Son from "./lib/Son";
 import echarts from "echarts";
-import {API_TOTALDATA} from "@/api/apis"
+import { API_TOTALDATA } from "@/api/apis";
 export default {
-  data(){
-    return{
-        totalAmount:"",
-        todayOrder:"",
-        totalOrder:"",
-        totayAmount:""
-    }
+  data() {
+    return {
+      totalAmount: "",
+      todayOrder: "",
+      totalOrder: "",
+      totayAmount: ""
+    };
   },
   components: {
     Son
   },
   mounted() {
     var myecharts = echarts.init(document.getElementById("echarts_box"));
-    API_TOTALDATA().then(res=>{
-      let {xData,orderData,amountData,todayOrder,totalAmount,totalOrder,totayAmount}=res.data
-      this.totalAmount=totalAmount
-      this. todayOrder= todayOrder
-      this.totayAmount=totayAmount
-      this.totalOrder=totalOrder
-      let option = {
-      title: {
-        text: "数据统计"
-      },
-      tooltip: {
-        trigger: "axis"
-      },
-      legend: {
-        data: ["订单", "销售额"]
-      },
-      grid: {
-        left: "3%",
-        right: "4%",
-        bottom: "3%",
-        containLabel: true
-      },
-      toolbox: {
-        feature: {
-          saveAsImage: {}
-        }
-      },
-      xAxis: {
-        type: "category",
-        boundaryGap: false,
-        data: xData
-      },
-      yAxis: {
-        type: "value"
-      },
-      series: [
-        {
-          name: "订单",
-          type: "line",
-          stack: "总量",
-          data:orderData
-        },
-        {
-          name: "销售额",
-          type: "line",
-          stack: "总量",
-          data:amountData
-        }
-      ],
-      
-    };
-    myecharts.setOption(option)     
-    })
-   
+    myecharts.showLoading();
+    setTimeout(() => {
+      API_TOTALDATA().then(res => {
+        let {
+          xData,
+          orderData,
+          amountData,
+          todayOrder,
+          totalAmount,
+          totalOrder,
+          totayAmount
+        } = res.data;
+        this.totalAmount = totalAmount;
+        this.todayOrder = todayOrder;
+        this.totayAmount = totayAmount;
+        this.totalOrder = totalOrder;
+        let option = {
+          title: {
+            text: "数据统计"
+          },
+          tooltip: {
+            trigger: "axis"
+          },
+          legend: {
+            data: ["订单", "销售额"]
+          },
+          grid: {
+            left: "3%",
+            right: "4%",
+            bottom: "3%",
+            containLabel: true
+          },
+          toolbox: {
+            feature: {
+              saveAsImage: {}
+            }
+          },
+          xAxis: {
+            type: "category",
+            boundaryGap: false,
+            data: xData
+          },
+          yAxis: {
+            type: "value"
+          },
+          series: [
+            {
+              name: "订单",
+              type: "line",
+              stack: "总量",
+              data: orderData
+            },
+            {
+              name: "销售额",
+              type: "line",
+              stack: "总量",
+              data: amountData
+            }
+          ]
+        };
+        myecharts.setOption(option);
+        myecharts.hideLoading();
+      });
+    }, 3000);
   }
 };
 </script>
@@ -150,7 +160,7 @@ export default {
     color: rgb(205, 205, 205);
     margin: 0px;
   }
-  #echarts_box{
+  #echarts_box {
     width: 1000px;
     height: 542px;
   }
