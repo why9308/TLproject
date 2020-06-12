@@ -14,36 +14,27 @@
         <el-form-item label="店铺公告">
           <el-input type="textarea" v-model="formLabelAlign.bulletin"></el-input>
         </el-form-item>
-        <el-form-item label="店铺头像" v-model="formLabelAlign.avatar">
+        <el-form-item label="店铺头像" >
           <el-upload
             class="avatar-uploader"
-            action="http://127.0.0.1:5000/shop/upload"
+            :action="UPLOAD"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
             <!-- avatar -->
-            <img
-              :src='"http://127.0.0.1:5000/upload/shop/"+this.formLabelAlign.avatar'
-              class="avatar"
-            />
+             <img v-if="formLabelAlign.avatar" :src="IMG_UPLOAD+formLabelAlign.avatar" class="avatar">
             <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
           </el-upload>
         </el-form-item>
         <el-form-item label="店铺图片" v-model="formLabelAlign.pics">
-          <img
-            class="img"
-            v-for="(item,index) in formLabelAlign.pics"
-            :key="item"
-            :src='"http://127.0.0.1:5000/upload/shop/"+formLabelAlign.pics[index]'
-            alt
-          />
           <el-upload
-            action="http://127.0.0.1:5000/shop/upload"
+            :action="UPLOAD"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
             :on-success="pics_success"
+            :file-list="file_list"
           >
             <!-- pics -->
             <i class="el-icon-plus"></i>
@@ -95,10 +86,17 @@
 </template>
 
 <script>
-import { API_INFO,API_EDIT } from "@/api/apisss";
+import { API_INFO,API_EDIT,UPLOAD,IMG_UPLOAD } from "@/api/apisss";
 export default {
   data() {
     return {
+      // 图片API地址
+      UPLOAD:UPLOAD,
+      // 店铺图片地址
+      IMG_UPLOAD:IMG_UPLOAD,
+      // 当前上传图片数组
+      file_list:[],
+      // 图片上传以后新图片名字
       pics: [],
       dialogImageUrl: "",
       dialogVisible: false,
@@ -155,26 +153,20 @@ export default {
       return isJPG && isLt2M;
     },
     modification() {  
+      let newObj={...this.formLabelAlign}
+     newObj.supports =JSON.stringify(this.checkList),
+      newObj.date= JSON.stringify(this.formLabelAlign.date),
+     newObj.pics= JSON.stringify(this.pics.concat(this.formLabelAlign.pics))
+      // .concat(this.file_list)
       API_EDIT(
-        this.id,
-        this.formLabelAlign.name,
-        this.formLabelAlign.bulletin,
-        this.formLabelAlign.avatar,
-        this.formLabelAlign.deliveryPrice,
-        this.formLabelAlign.deliveryTime,
-        this.formLabelAlign.description,
-        this.formLabelAlign.score,
-        this.formLabelAlign.sellCount,
-        JSON.stringify(this.checkList),
-        JSON.stringify(this.formLabelAlign.date),
-        JSON.stringify(this.pics)
-      ).then(()=>{   
-        this.formLabelAlign.pics=this.pics               
+       newObj
+       
+      ).then((res)=>{   
+        console.log(res);
+        
       })
        this.getdata();
-      // console.log( this.formLabelAlign.date);
-      // console.log(this.formLabelAlign.date.toString());
-      // console.log(this.time.toString());
+
       
       
       
@@ -182,11 +174,16 @@ export default {
     // 封装
     getdata(){
       API_INFO().then(res => {   
-      this.formLabelAlign = res.data.data;
-      this.checkList = res.data.data.supports;
-      this.id =res.data.data.id ;
-    })
+      this.file_list=res.data.data.pics.map(i=>{ 
+        return{
+          url:this.IMG_UPLOAD+i
+        }
+      })
+        this.formLabelAlign =res.data.data
+      })  
+          
     }
+    
       
   },
   created() {

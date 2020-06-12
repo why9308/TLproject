@@ -1,6 +1,13 @@
 import axios from "axios"
-//设置服务器IP地址
-axios.defaults.baseURL = "http://localhost:5000"
+    // 服务器IP地址
+ export const path_IP="http://localhost:5000"
+//  服务器上传图片API地址
+export const  UPLOAD=path_IP+'/shop/upload'
+// 获取服务器图片地址
+export const  IMG_UPLOAD=path_IP+'/upload/shop/'
+
+ //设置服务器IP地址
+axios.defaults.baseURL = path_IP
 
 
 // 订单管理
@@ -85,4 +92,5 @@ export const API_INFO = () => axios.get("/shop/info",{params:{}})
 // supports	 活动支持
 // date	营业时间
 // pics	图片
-export const API_EDIT=(id,name,bulletin,avatar,deliveryPrice,deliveryTime,description,score,sellCount,supports,date,pics)=>axios.post("/shop/edit",{id,name,bulletin,avatar,deliveryPrice,deliveryTime,description,score,sellCount,supports,date,pics})
+export const API_EDIT=(params)=>axios.post("/shop/edit",params)
+//  export const API_EDIT=(id,name,bulletin,avatar,deliveryPrice,deliveryTime,description,score,sellCount,supports,date,pics)=>axios.post("/shop/edit",{id,name,bulletin,avatar,deliveryPrice,deliveryTime,description,score,sellCount,supports,date,pics})

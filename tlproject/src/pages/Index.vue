@@ -14,7 +14,7 @@
       >
         <el-menu-item>
           <i class="el-icon-dish"></i>
-          <strong>外卖商家中心</strong>
+         <strong>外卖商家中心</strong>
         </el-menu-item>
         <div v-for="item in newtreelist " :key="item.index">
           <!-- 一级路由 -->

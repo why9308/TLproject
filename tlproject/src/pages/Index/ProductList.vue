@@ -19,7 +19,7 @@
               </el-form-item>
               <el-form-item label="商品图片">
                 <span>
-                  <img :src='"http://127.0.0.1:5000/upload/imgs/goods_img/"+props.row.imgUrl' alt />
+                  <img v-if="props.row.imgUrl" :src='"http://127.0.0.1:5000/upload/imgs/goods_img/"+props.row.imgUrl' class="avatar">
                 </span>
               </el-form-item>
               <el-form-item label="商品评价">
@@ -46,7 +46,7 @@
         <el-table-column label="商品价格" prop="price"></el-table-column>
         <el-table-column label="商品图片">
           <template slot-scope="scope">
-            <img :src='"http://127.0.0.1:5000/upload/imgs/goods_img/"+scope.row.imgUrl' alt />
+             <img v-if="scope.row.imgUrl" :src='"http://127.0.0.1:5000/upload/imgs/goods_img/"+scope.row.imgUrl' class="avatar">
           </template>
         </el-table-column>
         <el-table-column label="商品描述" prop="goodsDesc"></el-table-column>

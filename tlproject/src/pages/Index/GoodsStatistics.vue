@@ -25,7 +25,8 @@ export default {
   data(){
     return{
       pickerOptions:"",
-      value2:""
+      value2:"",
+      time2:[]
     }
   },
    mounted() {
