@@ -14,7 +14,7 @@
         <el-form-item label="店铺公告">
           <el-input type="textarea" v-model="formLabelAlign.bulletin"></el-input>
         </el-form-item>
-        <el-form-item label="店铺头像" >
+        <el-form-item label="店铺头像">
           <el-upload
             class="avatar-uploader"
             :action="UPLOAD"
@@ -23,7 +23,11 @@
             :before-upload="beforeAvatarUpload"
           >
             <!-- avatar -->
-             <img v-if="formLabelAlign.avatar" :src="IMG_UPLOAD+formLabelAlign.avatar" class="avatar">
+            <img
+              v-if="formLabelAlign.avatar"
+              :src="IMG_UPLOAD+formLabelAlign.avatar"
+              class="avatar"
+            />
             <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
           </el-upload>
         </el-form-item>
@@ -86,16 +90,16 @@
 </template>
 
 <script>
-import { API_INFO,API_EDIT,UPLOAD,IMG_UPLOAD } from "@/api/apisss";
+import { API_INFO, API_EDIT, UPLOAD, IMG_UPLOAD } from "@/api/apisss";
 export default {
   data() {
     return {
       // 图片API地址
-      UPLOAD:UPLOAD,
+      UPLOAD: UPLOAD,
       // 店铺图片地址
-      IMG_UPLOAD:IMG_UPLOAD,
+      IMG_UPLOAD: IMG_UPLOAD,
       // 当前上传图片数组
-      file_list:[],
+      file_list: [],
       // 图片上传以后新图片名字
       pics: [],
       dialogImageUrl: "",
@@ -126,6 +130,31 @@ export default {
   methods: {
     handleRemove(file, fileList) {
       console.log(file, fileList);
+      let img = file.url.slice(34);
+
+      API_INFO().then(res => {
+        res.data.data.pics.splice(res.data.data.pics.indexOf(img), 1);
+            
+        this.pics=res.data.data.pics;
+        this.file_list = res.data.data.pics.map(i => {
+          return {
+            url: this.IMG_UPLOAD + i
+          };
+        });
+        this.formLabelAlign = res.data.data;
+        console.log(this.formLabelAlign);
+        
+        let newObj = { ...this.formLabelAlign };
+        (newObj.supports = JSON.stringify(this.checkList)),
+          (newObj.date = JSON.stringify(this.formLabelAlign.date)),
+          (newObj.pics = JSON.stringify(
+            this.pics
+          ));
+        API_EDIT(newObj).then(res => {
+          console.log(res);
+        });
+        this.getdata();
+      });
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -152,42 +181,32 @@ export default {
       }
       return isJPG && isLt2M;
     },
-    modification() {  
-      let newObj={...this.formLabelAlign}
-     newObj.supports =JSON.stringify(this.checkList),
-      newObj.date= JSON.stringify(this.formLabelAlign.date),
-     newObj.pics= JSON.stringify(this.pics.concat(this.formLabelAlign.pics))
-      // .concat(this.file_list)
-      API_EDIT(
-       newObj
-       
-      ).then((res)=>{   
+    modification() {
+      let newObj = { ...this.formLabelAlign };
+      (newObj.supports = JSON.stringify(this.checkList)),
+        (newObj.date = JSON.stringify(this.formLabelAlign.date)),
+        (newObj.pics = JSON.stringify(
+          this.pics.concat(this.formLabelAlign.pics)
+        ));
+      API_EDIT(newObj).then(res => {
         console.log(res);
-        
-      })
-       this.getdata();
-
-      
-      
-      
+      });
+      this.getdata();
     },
     // 封装
-    getdata(){
-      API_INFO().then(res => {   
-      this.file_list=res.data.data.pics.map(i=>{ 
-        return{
-          url:this.IMG_UPLOAD+i
-        }
-      })
-        this.formLabelAlign =res.data.data
-      })  
-          
+    getdata() {
+      API_INFO().then(res => {
+        this.file_list = res.data.data.pics.map(i => {
+          return {
+            url: this.IMG_UPLOAD + i
+          };
+        });
+        this.formLabelAlign = res.data.data;
+      });
     }
-    
-      
   },
   created() {
-    this.getdata()
+    this.getdata();
   }
 };
 </script>
@@ -197,9 +216,9 @@ export default {
   .el-input {
     width: 300px;
   }
-  .img{
+  .img {
     width: 100px;
-    height:100px ;
+    height: 100px;
     margin-right: 5px;
   }
   .el-textarea {

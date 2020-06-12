@@ -26,7 +26,7 @@
       <div class="add_box">
         <p>商品图片</p>
         <el-upload
-          action="http://127.0.0.1:5000/goods/goods_img_upload"
+          :action="IMG_ADD"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
           :on-remove="handleRemove"
@@ -50,9 +50,12 @@
 
 <script>
 import { API_INQUIRE, API_ADDGOODS } from "@/api/apiss";
+import {IMG_ADD} from  "@/api/apisss"
 export default {
   data() {
     return {
+      // 图片上传地址
+      IMG_ADD:IMG_ADD,
       data: { id: localStorage.id },
       dialogImageUrl: "",
       dialogVisible: false,

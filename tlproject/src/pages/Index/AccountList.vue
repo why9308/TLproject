@@ -18,7 +18,6 @@
 
         <el-table-column prop="operation" label="操作">
           <template slot-scope="scope">
-            <!-- <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
             <el-button
               size="mini"
               type="primary"
@@ -65,11 +64,7 @@
 </template>
 
 <script>
-import { API_ACCLIST } from "@/api/apis";
-import { API_DELETE } from "@/api/apis";
-import { API_BATCHDEL } from "@/api/apis";
-import { API_COMPILE } from "@/api/apis";
-// import {API_ACCLIST,API_DELETE,API_BATCHDEL,API_COMPILE }from "@/api/apis";
+import {API_ACCLIST,API_DELETE,API_BATCHDEL,API_COMPILE }from "@/api/apis";
 export default {
   data() {
     return {

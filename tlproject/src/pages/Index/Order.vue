@@ -1,61 +1,6 @@
 <template>
   <div class="Index_box">
     <div>
-      <!-- <el-row :gutter="20">
-              <el-col :span="5">
-                <div class="grid-content bg-purple">
-                  
-               <span>订单号：</span><el-input placeholder="请输入内容" v-model="input1" clearable></el-input>
-                </div>
-              </el-col>
-              <el-col :span="5">
-                <div class="grid-content bg-purple">
-                 收货人： <el-input placeholder="请输入内容" v-model="input2" clearable></el-input>
-                </div>
-              </el-col>
-              <el-col :span="5">
-                <div class="grid-content bg-purple">
-                  手机号： <el-input placeholder="请输入内容" v-model="input3" clearable></el-input>
-                </div>
-              </el-col>
-              <el-col :span="5">
-                <div class="grid-content bg-purple">
-                  订单状态：<el-input placeholder="请输入内容" v-model="input4" clearable></el-input>
-                </div>
-              </el-col>
-      </el-row>-->
-      <!-- <div class="order_box">
-              订单号：
-              <el-input placeholder="请输入订单号" v-model="from.orderNo" clearable></el-input>
-            </div>
-            <div class="order_box">
-              收货人：
-              <el-input placeholder="请输入收货人" v-model="from.consignee" clearable></el-input>
-            </div>
-            <div class="order_box">
-              手机号：
-              <el-input placeholder="请输入手机号" v-model="from.phone" clearable></el-input>
-            </div>
-            <div class="order_box">
-              订单状态：
-              <el-input placeholder="请输入订单状态" v-model="from.orderState" clearable></el-input>
-            </div>
-          </div>
-          <div>
-            <div class="block">
-              <span class="demonstration">选择时间</span>
-              <el-date-picker
-                v-model="value"
-                type="datetimerange"
-                align="right"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                :default-time="['00:00:00', '00:00:00']"
-                value-format="yyyy-MM-dd HH:mm:ss"
-                unlink-panels
-              ></el-date-picker>
-              <el-button type="primary" @click="orderbtn">查询</el-button>
-      </div>-->
       <el-form :inline="true" :model="orderSearch" class="demo-form-inline">
         <el-form-item label="订单号">
           <el-input v-model="orderSearch.orderNo" placeholder="订单号"></el-input>
@@ -298,7 +243,7 @@ export default {
     // 查询
     search() {    
       API_ORDERLIST1(
-        this.page,
+        1,
         this.pageSize,
         this.orderSearch.orderNo,
         this.orderSearch.consignee,

@@ -15,7 +15,7 @@
           管理员头像：
           <el-upload
             class="avatar-uploader"
-            action="http://127.0.0.1:5000/users/avatar_upload"
+            :action="IMG_MYCENTER"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -36,10 +36,12 @@
 
 <script>
 import { API_ACCOUNTINFO } from "@/api/apis";
+import {IMG_MYCENTER}from "@/api/apisss"
 export default {
   data() {
     return {
       data: {id:localStorage.id},
+      IMG_MYCENTER:IMG_MYCENTER,
       message: {
         id: "",
         ctime: "",

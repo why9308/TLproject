@@ -5,6 +5,15 @@ import axios from "axios"
 export const  UPLOAD=path_IP+'/shop/upload'
 // 获取服务器图片地址
 export const  IMG_UPLOAD=path_IP+'/upload/shop/'
+//获取服务器商品添加上传API地址
+export const  IMG_ADD=path_IP+'/goods/goods_img_upload'
+// 获取服务器个人中心上传API地址
+export const  IMG_MYCENTER=path_IP+'/users/avatar_upload'
+// 获取商品列表添加图片地址
+export const  IMG_PROLIST=path_IP+'/upload/imgs/goods_img/'
+//获取商品添加API地址
+export const IMG_ADDPORLIST=path_IP+'/goods/goods_img_upload'
+
 
  //设置服务器IP地址
 axios.defaults.baseURL = path_IP

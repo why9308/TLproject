@@ -19,7 +19,7 @@
               </el-form-item>
               <el-form-item label="商品图片">
                 <span>
-                  <img v-if="props.row.imgUrl" :src='"http://127.0.0.1:5000/upload/imgs/goods_img/"+props.row.imgUrl' class="avatar">
+                  <img v-if="props.row.imgUrl" :src='IMG_PROLIST+props.row.imgUrl' class="avatar">
                 </span>
               </el-form-item>
               <el-form-item label="商品评价">
@@ -46,7 +46,7 @@
         <el-table-column label="商品价格" prop="price"></el-table-column>
         <el-table-column label="商品图片">
           <template slot-scope="scope">
-             <img v-if="scope.row.imgUrl" :src='"http://127.0.0.1:5000/upload/imgs/goods_img/"+scope.row.imgUrl' class="avatar">
+             <img v-if="scope.row.imgUrl" :src='IMG_PROLIST+scope.row.imgUrl' class="avatar">
           </template>
         </el-table-column>
         <el-table-column label="商品描述" prop="goodsDesc"></el-table-column>
@@ -74,7 +74,7 @@
                 </el-form-item>
                  <el-form-item label="商品地址" :label-width="formLabelWidth">
                    <el-upload
-                    action="http://127.0.0.1:5000/goods/goods_img_upload"
+                    :action="IMG_ADDPORLIST"
                     list-type="picture-card"
                     :on-preview="handlePictureCardPreview"
                     :on-remove="handleRemove"
@@ -113,9 +113,12 @@
 
 <script>
 import { API_LIST, API_DEL,API_EDIT,API_INQUIRE} from "@/api/apiss";
+import {IMG_PROLIST,IMG_ADDPORLIST} from "@/api/apisss"
 export default {
   data() {
     return {
+      IMG_ADDPORLIST:IMG_ADDPORLIST,
+      IMG_PROLIST:IMG_PROLIST,
       options:{},
        dialogImageUrl: '',
         dialogVisible: false,

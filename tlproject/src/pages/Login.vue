@@ -2,7 +2,7 @@
   <!-- 登陆页面 -->
   <div class="login">
     <div class="login_box">
-      <h4>天禄外卖管理系统</h4>
+      <h4>饿吗外卖管理系统</h4>
       <el-input placeholder="请输入用户名" v-model="acc" clearable></el-input>
       <el-input placeholder="请输入密码" v-model="pwd" show-password></el-input>
       <el-button @click="clickLogin" type="primary">登陆</el-button>

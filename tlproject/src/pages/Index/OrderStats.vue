@@ -40,8 +40,6 @@ export default {
         var price=this.time.map(item=>{
           return item.orderAmount
         })
-        // console.log(time);
-        // console.log(price);
         let option = {
         title: {
           text: "数据统计",
